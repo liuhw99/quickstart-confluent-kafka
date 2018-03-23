@@ -382,7 +382,6 @@
         },
         "ZookeeperNodeInstanceType": {
             "AllowedValues": [
-                "m3.xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
