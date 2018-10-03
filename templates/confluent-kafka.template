@@ -254,12 +254,13 @@
         },
         "ConfluentVersion": {
             "AllowedValues": [
+                "5.0.0",
                 "4.1.0",
                 "4.0.0",
                 "3.3.1"
             ],
             "ConstraintDescription": "Supported versions of Confluent Platform within AWS Marketplace",
-            "Default": "3.3.1",
+            "Default": "5.0.0",
             "Description": "Confluent Software Version",
             "Type": "String"
         },
