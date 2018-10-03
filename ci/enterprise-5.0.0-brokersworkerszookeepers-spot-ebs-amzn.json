@@ -37,7 +37,7 @@
     },
     {
         "ParameterKey": "ConfluentVersion",
-        "ParameterValue": "4.1.0"
+        "ParameterValue": "5.0.0"
     },
     {
         "ParameterKey": "KeyPairName",
