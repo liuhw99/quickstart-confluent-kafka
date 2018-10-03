@@ -1,5 +1,9 @@
 [
     {
+        "ParameterKey":"QSS3BucketName",
+        "ParameterValue":"$[taskcat_autobucket]"
+    },
+    {
         "ParameterKey": "AssignPublicIP",
         "ParameterValue": "true"
     },
