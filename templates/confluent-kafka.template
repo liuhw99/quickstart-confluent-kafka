@@ -62,17 +62,6 @@
                 },
                 {
                     "Label": {
-                        "default": "Worker Instance Configuration"
-                    },
-                    "Parameters": [
-                        "NumWorkers",
-                        "WorkerNodeInstanceType",
-                        "WorkerNodeStorage",
-                        "WorkerNodeSpotPrice"
-                    ]
-                },
-                {
-                    "Label": {
                         "default": "AWS Quick Start Configuration"
                     },
                     "Parameters": [
@@ -243,7 +232,7 @@
         "ClusterName": {
             "AllowedPattern": "([A-Za-z]{1}[0-9A-Za-z_-]*)",
             "ConstraintDescription": "The ClusterName value must be alphanumeric",
-            "Default": "awsqs",
+            "Default": "kafkadev",
             "Description": "Confluent Cluster ID",
             "Type": "String"
         },
@@ -316,14 +305,14 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "aws-quickstart",
+            "Default": "sop-kafka",
             "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
         "QSS3KeyPrefix": {
             "AllowedPattern": "^[0-9a-zA-Z-/]*$",
             "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Default": "quickstart-confluent-kafka/",
+            "Default": "qs-kafka/",
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
             "Type": "String"
         },
@@ -347,6 +336,7 @@
         },
         "VPCID": {
             "Description": "ID of the VPC (e.g. vpc-0343606e)",
+            "Default": "vpc-93f7d6ea",
             "Type": "AWS::EC2::VPC::Id"
         },
         "WorkerNodeInstanceType": {
@@ -746,21 +736,6 @@
                 }
             }
         },
-        "BrokerWorkerIngress": {
-            "Type": "AWS::EC2::SecurityGroupIngress",
-            "Condition": "IndependentWorkers",
-            "Properties": {
-                "GroupId": {
-                    "Ref": "BrokerSecurityGroup"
-                },
-                "IpProtocol": "tcp",
-                "FromPort": "9092",
-                "ToPort": "9095",
-                "SourceSecurityGroupId": {
-                    "Ref": "WorkerSecurityGroup"
-                }
-            }
-        },
         "ZookeeperSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Condition": "IndependentZookeepers",
@@ -860,29 +835,6 @@
                 "ToPort": "2181",
                 "SourceSecurityGroupId": {
                     "Ref": "BrokerSecurityGroup"
-                }
-            }
-        },
-        "ZookeeperWorkerIngress": {
-            "Type": "AWS::EC2::SecurityGroupIngress",
-            "Condition": "IndependentWorkers",
-            "Properties": {
-                "GroupId": {
-                    "Fn::If": [
-                        "IndependentZookeepers",
-                        {
-                            "Ref": "ZookeeperSecurityGroup"
-                        },
-                        {
-                            "Ref": "BrokerSecurityGroup"
-                        }
-                    ]
-                },
-                "IpProtocol": "tcp",
-                "FromPort": "2181",
-                "ToPort": "2181",
-                "SourceSecurityGroupId": {
-                    "Ref": "WorkerSecurityGroup"
                 }
             }
         },
