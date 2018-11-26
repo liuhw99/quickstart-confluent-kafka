@@ -187,6 +187,10 @@
         },
         "BrokerNodeInstanceType": {
             "AllowedValues": [
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "t2.large",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
@@ -206,7 +210,7 @@
                 "i2.2xlarge"
             ],
             "ConstraintDescription": "Must be a valid EC2 instance type.",
-            "Default": "m4.xlarge",
+            "Default": "t2.small",
             "Description": "Instance Type for Kafka brokers; select m3/m4 or i2 instance types for us-west-1 and sa-east-1",
             "Type": "String"
         },
@@ -219,7 +223,7 @@
         },
         "BrokerNodeStorage": {
             "ConstraintDescription": "No more than 4000 GiB per device (16 TB per node). Be Careful About Exceeding your AWS Storage Limit.",
-            "Default": "512",
+            "Default": "24",
             "Description": "Allocated EBS storage for each block device (in GiB; 4 devs per node); 0 indicates ephemeral storage only",
             "MaxValue": "4000",
             "MinValue": "0",
@@ -232,7 +236,7 @@
                 "sc1",
                 "st1"
             ],
-            "Default": "st1",
+            "Default": "gp2",
             "Description": "EBS volume type (blank indicates default type for ami/region).  sc1 and st1 volumes must be at least 500 GiB in size.",
             "Type": "String"
         },
@@ -248,7 +252,7 @@
                 "Confluent Open Source",
                 "Confluent Enterprise"
             ],
-            "Default": "Confluent Enterprise",
+            "Default": "Confluent Open Source",
             "Description": "Confluent Software Edition",
             "Type": "String"
         },
@@ -292,7 +296,7 @@
             "Type": "Number"
         },
         "NumWorkers": {
-            "Default": "2",
+            "Default": "0",
             "Description": "Number of Kafka Connect Workers",
             "MaxValue": "9",
             "MinValue": "0",
@@ -305,7 +309,7 @@
                 "3",
                 "5"
             ],
-            "Default": "0",
+            "Default": "3",
             "Description": "Number of independent Zookeepers (if 0, zookeeper will be deployed on the Kafka brokers)",
             "Type": "String"
         },
@@ -327,12 +331,14 @@
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x",
             "Description": "Allowed CIDR block for external access to cluster nodes",
+            "Default": "0.0.0.0/0",
             "Type": "String"
         },
         "SSHAccessCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x",
             "Description": "Allowed CIDR block for SSH access to cluster nodes",
+            "Default": "0.0.0.0/0",
             "Type": "String"
         },
         "SubnetID": {
@@ -345,6 +351,10 @@
         },
         "WorkerNodeInstanceType": {
             "AllowedValues": [
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "t2.large",
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
@@ -363,7 +373,7 @@
                 "i2.2xlarge"
             ],
             "ConstraintDescription": "Must be a valid EC2 instance type.",
-            "Default": "m4.xlarge",
+            "Default": "t2.micro",
             "Description": "Instance Type for Kafka Connect workers; select m3/m4 or i2 instance types for us-west-1 and sa-east-1",
             "Type": "String"
         },
@@ -384,6 +394,10 @@
         },
         "ZookeeperNodeInstanceType": {
             "AllowedValues": [
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "t2.large",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
@@ -393,7 +407,7 @@
                 "m5.4xlarge"
             ],
             "ConstraintDescription": "Must be a valid EC2 instance type.",
-            "Default": "m4.large",
+            "Default": "t2.micro",
             "Description": "Instance Type for Zookeeper servers; select m3/m4 for us-west-1 and sa-east-1",
             "Type": "String"
         },
@@ -779,7 +793,7 @@
                     {
                         "IpProtocol": "tcp",
                         "FromPort": "9092",
-                        "ToPort": "9093",
+                        "ToPort": "9095",
                         "CidrIp": {
                             "Ref": "RemoteAccessCIDR"
                         }
@@ -803,7 +817,7 @@
                 },
                 "IpProtocol": "tcp",
                 "FromPort": "9092",
-                "ToPort": "9093",
+                "ToPort": "9095",
                 "SourceSecurityGroupId": {
                     "Ref": "BrokerSecurityGroup"
                 }
@@ -818,7 +832,7 @@
                 },
                 "IpProtocol": "tcp",
                 "FromPort": "9092",
-                "ToPort": "9093",
+                "ToPort": "9095",
                 "SourceSecurityGroupId": {
                     "Ref": "WorkerSecurityGroup"
                 }
